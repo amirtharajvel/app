@@ -2,12 +2,14 @@ const express = require('express')
 const redis = require('redis')
 
 const app = express()
-const port = 8080
+const port = 3000
 
 // Connect to Redis using the Redis container hostname
 const client = redis.createClient({
-  host: 'redis', // Name of the Redis container (can be customized)
-  port: 6379,
+  socket: {
+    host: '172.19.0.2',
+    port: '6379',
+  },
 })
 
 ;(async () => {
