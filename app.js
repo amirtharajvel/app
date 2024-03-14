@@ -1,13 +1,56 @@
 const express = require('express')
+const redis = require('redis')
 
-let app = express()
+const app = express()
+const port = 8080
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
+// Connect to Redis using the Redis container hostname
+const client = redis.createClient({
+  host: 'redis', // Name of the Redis container (can be customized)
+  port: 6379,
 })
-app.listen(8080, '0.0.0.0')
 
-process.on('uncaughtException', (e) => {
-  console.error(e) // try console.log if that doesn't work
-  process.exit(10)
+;(async () => {
+  try {
+    await client.connect()
+    console.log('Connected to Redis')
+  } catch (error) {
+    console.error('Error connecting to Redis:', error)
+    process.exit(1)
+  }
+})()
+
+// Sample route to set a key-value pair in Redis
+app.get('/set/:key/:value', async (req, res) => {
+  const key = req.params.key
+  const value = req.params.value
+
+  try {
+    await client.set(key, value)
+    res.send(`Successfully set key: ${key}, value: ${value}`)
+  } catch (error) {
+    console.error('Error setting key:', error)
+    res.status(500).send('Internal Server Error')
+  }
+})
+
+// Sample route to get a key-value pair from Redis
+app.get('/get/:key', async (req, res) => {
+  const key = req.params.key
+
+  try {
+    const value = await client.get(key)
+    if (value === null) {
+      res.send('Key not found')
+    } else {
+      res.send(`Key: ${key}, Value: ${value}`)
+    }
+  } catch (error) {
+    console.error('Error getting key:', error)
+    res.status(500).send('Internal Server Error')
+  }
+})
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`)
 })

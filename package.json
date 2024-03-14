@@ -1,17 +1,15 @@
 {
   "name": "app",
   "version": "1.0.0",
-  "description": "Simple web app in node",
+  "description": "Your Node.js application description",
   "main": "app.js",
-  "dependencies": {
-    
-    "dotenv": "^16.4.1",
-    "express": "^4.18.2"
-  },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "redis": "^4.6.13"
+  }
 }
