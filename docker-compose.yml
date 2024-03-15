@@ -11,8 +11,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    links:
-      - redis
     depends_on:
       - redis
     environment:
