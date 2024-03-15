@@ -7,7 +7,7 @@ const port = 3000
 // Connect to Redis using the Redis container hostname
 const client = redis.createClient({
   socket: {
-    host: '172.19.0.2',
+    host: process.env.REDIS_HOST || 'localhost',
     port: '6379',
   },
 })
